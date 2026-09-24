@@ -1,0 +1,3 @@
+{% extends 'base.html' %}
+{% block title %}Iniciar sesión | Alke Wallet{% endblock %}
+{% block content %}<div class="login-layout"><div><p class="eyebrow">Alke Financial</p><h1>Tu dinero,<br><em>en movimiento.</em></h1><p class="muted">Una billetera digital clara para administrar tus finanzas con confianza.</p></div><div class="form-card login-card"><p class="eyebrow">Acceso seguro</p><h2>Iniciar sesión</h2><form method="post">{% csrf_token %}{{ form.non_field_errors }}{% for field in form %}<label for="{{ field.id_for_label }}">{{ field.label }}{{ field }}{% for error in field.errors %}<small class="error">{{ error }}</small>{% endfor %}</label>{% endfor %}<button class="button button-full" type="submit">Entrar a mi wallet</button></form></div></div>{% endblock %}

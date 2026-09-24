@@ -1,0 +1,20 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Alke Wallet{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/app.css' %}">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="{% url 'gestion:dashboard' %}"><span class="brand-mark">A</span> Alke Wallet</a>
+    {% if user.is_authenticated %}
+      <nav><a href="{% url 'gestion:dashboard' %}">Resumen</a><a href="{% url 'gestion:cuenta-list' %}">Mis cuentas</a><form action="{% url 'logout' %}" method="post">{% csrf_token %}<button class="link-button" type="submit">Salir</button></form></nav>
+    {% endif %}
+  </header>
+  <main class="page-shell">{% block content %}{% endblock %}</main>
+  <footer>Alke Financial · Tus finanzas, más claras.</footer>
+</body>
+</html>

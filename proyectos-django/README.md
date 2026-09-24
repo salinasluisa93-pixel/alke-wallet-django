@@ -118,6 +118,28 @@ Para crear un usuario administrador:
 python manage.py createsuperuser
 ```
 
+### Acceso de administrador para desarrollo
+
+En la base de datos local incluida durante el desarrollo se configuró el
+siguiente superusuario:
+
+```text
+URL:      http://127.0.0.1:8000/admin/
+Usuario:  magdalena
+Password: 123
+```
+
+Si estás trabajando con una base de datos nueva y ese usuario no existe,
+puedes crearlo o actualizarlo ejecutando desde la raíz del proyecto:
+
+```powershell
+python manage.py shell -c "from django.contrib.auth import get_user_model; User=get_user_model(); u,created=User.objects.get_or_create(username='magdalena'); u.is_staff=True; u.is_superuser=True; u.set_password('123'); u.save(); print('Superusuario listo')"
+```
+
+Estas credenciales son únicamente para pruebas locales. La contraseña `123` es
+intencionalmente simple para la demostración; debe cambiarse inmediatamente en
+cualquier entorno compartido, público o de producción.
+
 ## Ejecutar la aplicación
 
 ```powershell

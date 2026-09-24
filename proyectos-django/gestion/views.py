@@ -1,5 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Count, Sum
+from decimal import Decimal
+
+from django.db.models import Count, DecimalField, Sum
 from django.db.models.functions import Coalesce
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, TemplateView, UpdateView
@@ -27,7 +29,13 @@ class DashboardView(ClienteRequiredMixin, TemplateView):
 		context.update({
 			'cliente': cliente,
 			'cuentas': cuentas,
-			'saldo_total': cuentas.aggregate(total=Coalesce(Sum('saldo'), 0))['total'],
+			'saldo_total': cuentas.aggregate(
+				total=Coalesce(
+					Sum('saldo'),
+					Decimal('0.00'),
+					output_field=DecimalField(max_digits=14, decimal_places=2),
+				)
+			)['total'],
 			'movimientos': Transaccion.objects.filter(cuenta__cliente=cliente).select_related('cuenta')[:6],
 			'cuentas_con_movimientos': cuentas.annotate(total_movimientos=Count('transacciones')),
 		})
